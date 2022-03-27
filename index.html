@@ -7,7 +7,7 @@
   <title>Document</title>
 </head>
 <body>
-  <div id=""app>{{name}}</div>
+  <div id="app" a="1">{{name}}</div>
   <script src="dist/vue.js"></script>
   <script>
     let vm = new Vue({
@@ -16,10 +16,12 @@
         return {
           name: [1,2]
         }
-      }
+      },
+      // render(){
+      //   return h('div', {class:'xxx'}, 'hello')
+      // }
     })
     vm.name.splice(0,1,'xxx', 'xxxx')
-    console.log(vm.name)
   </script>
 </body>
 </html>
