@@ -1,3 +1,5 @@
+import { patch } from "./vdom/patch";
+
 export function mountComponent (vm ,el) {
   // 更新函数 数据变化后 会再次调用此函数
   const updateComponent = () => {
@@ -9,6 +11,7 @@ export function mountComponent (vm ,el) {
 
 export function lifecycleMixin (Vue) {
   Vue.prototype._update = function(vnode) {
-    console.log('update', vnode);
+    const vm = this;
+    patch(vm.$el, vnode);
   }
 }

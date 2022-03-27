@@ -21,11 +21,13 @@ export function initMixin(Vue) {
     const vm = this;
     const options = vm.$options;
     el = document.querySelector(el);
-    // 模版 => render函数 => 虚拟dom => diff算法 =>更新虚拟dom => 渲染节点
+    vm.$el = el;
+    // 模版 => render函数(组件挂载) => 虚拟dom => diff算法 =>更新虚拟dom => 渲染节点
     if(!options.render) {
       let template = options.template;
       if(!template && el) {
         template = el.outerHTML;
+        // render函数
         const render = compileToFunction(template)
         options.render = render;
       }
