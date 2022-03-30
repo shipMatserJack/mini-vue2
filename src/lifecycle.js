@@ -1,3 +1,4 @@
+import Watcher from "./observer/watcher";
 import { patch } from "./vdom/patch";
 
 export function mountComponent (vm ,el) {
@@ -6,12 +7,14 @@ export function mountComponent (vm ,el) {
     // 调用render函数，生成虚拟dom
     vm._update(vm._render());
   }
-  updateComponent();
+  new Watcher(vm, updateComponent(), () => {
+    console.log('视图更新了')
+  }, true);
 }
 
 export function lifecycleMixin (Vue) {
   Vue.prototype._update = function(vnode) {
     const vm = this;
-    patch(vm.$el, vnode);
+    vm.$el = patch(vm.$el, vnode);
   }
 }

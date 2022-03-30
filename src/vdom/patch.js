@@ -1,9 +1,10 @@
 export function patch(oldVnode, vnode) {
   if (oldVnode.nodeType === 1) {
     let parentEle = oldVnode.parentNode; // 找到老节点父元素
-    let ele = createEle(vnode);
-    parentEle.insertBefore(ele, oldVnode.nextSibling);
-    parentEle.removeChild(oldVnode)
+    let ele = createEle(vnode); // 根据vnode创建新节点
+    parentEle.insertBefore(ele, oldVnode.nextSibling); // 插入新节点
+    parentEle.removeChild(oldVnode) // 删除老节点
+    return ele
   }
 }
 
