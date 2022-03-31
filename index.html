@@ -23,6 +23,14 @@
       //   return h('div', {class:'xxx'}, 'hello')
       // }
     })
+    setTimeout(() => {
+      vm.name = 'hxy'
+      vm.name = 'hj'
+      vm.name = 'yy'
+      vm.$nextTick(() => {
+        console.log(vm.$el)
+      })
+    }, 100)
   </script>
 </body>
 </html>

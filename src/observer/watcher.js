@@ -1,5 +1,10 @@
-import { popTarget, pushTarget } from "./dep";
-import { queueWatcher } from "./scheduler";
+import {
+  popTarget,
+  pushTarget
+} from "./dep";
+import {
+  queueWatcher
+} from "./scheduler";
 
 let id = 0;
 class Watcher {
@@ -25,9 +30,12 @@ class Watcher {
     // 缓存watcher,避免多次调用同一个watcher的update
     queueWatcher(this);
   }
+  run() {
+    this.get()
+  }
   addDep(dep) {
     let id = dep.id;
-    if(!this.depsId.has(id)) {
+    if (!this.depsId.has(id)) {
       this.depsId.add(id);
       this.deps.push(dep);
       dep.addSub(this);
