@@ -37,5 +37,8 @@ methods.forEach(method => {
     }
     // 有新增的内容就要继续劫持
     if (inserted) ob.observeArray(inserted)
+
+    // 更新操作
+    ob.dep.notify()
   }
 })

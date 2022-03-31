@@ -9,6 +9,7 @@
 <body>
   <div id="app" a="1" style="color: red; background-color: aqua;">
     <span class="emo"> hello {{name}} world</span>
+    <span class="emo">{{arr}}</span>
   </div>
   <script src="dist/vue.js"></script>
   <script>
@@ -16,7 +17,8 @@
       el: '#app',
       data() {
         return {
-          name: 'hj'
+          // name: 'hj',
+          arr: [[1,2,3]]
         }
       },
       // render(){
@@ -31,6 +33,7 @@
         console.log(vm.$el)
       })
     }, 100)
+    vm.arr.push(456)
   </script>
 </body>
 </html>
