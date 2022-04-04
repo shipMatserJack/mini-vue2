@@ -4,6 +4,9 @@ export function isFuction(val) {
 export function isObject(val) {
   return typeof val === 'object' && val !== null
 }
+export function noop() {
+  return () => {}
+}
 
 const calllbacks = [];
 

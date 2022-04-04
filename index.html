@@ -8,8 +8,7 @@
 </head>
 <body>
   <div id="app" a="1" style="color: red; background-color: aqua;">
-    <span class="emo"> hello {{name}} world</span>
-    <span class="emo">{{arr}}</span>
+    <span class="emo">{{fullName}}</span>
   </div>
   <script src="dist/vue.js"></script>
   <script>
@@ -18,26 +17,38 @@
       data() {
         return {
           name: 'hj',
+          firstName: 'gq',
+          lastName: 'love',
           arr: [[1,2,3]]
         }
       },
       watch: {
-        name(newval, oldVal) {
-          console.log(newval, oldVal)
+        // name(newval, oldVal) {
+        //   console.log(newval, oldVal)
+        // }
+      },
+      computed: {
+        fullName: {
+          get() {
+            return this.firstName + this.lastName;
+          },
+          set(newVal) {
+            console.log(newVal)
+          }
         }
       }
       // render(){
       //   return h('div', {class:'xxx'}, 'hello')
       // }
     })
-    // vm.arr.push(456)
-    setTimeout(() => {
-      vm.name = 'hxy'
-      vm.name = 'yy'
-      vm.$nextTick(() => {
-        console.log(vm.$el)
-      })
-    }, 100)
+    console.log(vm.fullName)
+    // setTimeout(() => {
+    //   vm.name = 'hxy'
+    //   vm.name = 'yy'
+    //   vm.$nextTick(() => {
+    //     console.log(vm.$el)
+    //   })
+    // }, 100)
   </script>
 </body>
 </html>
