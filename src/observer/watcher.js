@@ -7,31 +7,58 @@ import {
 } from "./scheduler";
 
 let id = 0;
+/**
+ * @desc 包含了渲染watcher 和 用户watcher
+ */
 class Watcher {
   constructor(vm, exprOrFn, cb, options) {
     this.vm = vm;
     this.exprOrFn = exprOrFn;
+    this.user = !!options.user; // 是否是用户watcher
     this.cb = cb;
     this.options = options;
     this.id = id++;
     this.deps = [];
     this.depsId = new Set();
+    
+    if(typeof exprOrFn === 'string') {
+      // 将表达式转换成函数
+      this.getter = function () {
+        // 数据取值时，进行依赖收集
+        // age.n => vm['age']['n']
+        let path = exprOrFn.split('.'); // [age, n]
+        let obj = vm;
+        for(let i=0; i<path.length; i++) {
+          obj = obj[path[i]]
+        }
+        return obj;
+      }
+    } else {
+      this.getter = exprOrFn;
+    }
     // 默认初始化执行
-    this.getter = exprOrFn;
-    this.get();
+    // 第一次的value
+    this.value = this.get();
   }
   // 用户更新会重新调用getter
   get() {
     pushTarget(this); // 将watcher放入dep中
-    this.getter(); // vm._update(vm._render())
+    const value = this.getter(); // vm._update(vm._render())
     popTarget(); // 更新完移除watcher
+    return value;
   }
   update() {
     // 缓存watcher,避免多次调用同一个watcher的update
     queueWatcher(this);
   }
   run() {
-    this.get()
+    const newValue = this.get();
+    const oldValue = this.value;
+    this.value = newValue;
+    // 用户watcher
+    if(this.user) {
+      this.cb.call(this.vm, newValue, oldValue);
+    }
   }
   addDep(dep) {
     let id = dep.id;

@@ -17,23 +17,27 @@
       el: '#app',
       data() {
         return {
-          // name: 'hj',
+          name: 'hj',
           arr: [[1,2,3]]
         }
       },
+      watch: {
+        name(newval, oldVal) {
+          console.log(newval, oldVal)
+        }
+      }
       // render(){
       //   return h('div', {class:'xxx'}, 'hello')
       // }
     })
+    // vm.arr.push(456)
     setTimeout(() => {
       vm.name = 'hxy'
-      vm.name = 'hj'
       vm.name = 'yy'
       vm.$nextTick(() => {
         console.log(vm.$el)
       })
     }, 100)
-    vm.arr.push(456)
   </script>
 </body>
 </html>
