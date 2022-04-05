@@ -1,6 +1,7 @@
 import { compileToFunction } from "./compiler/index";
-import { mountComponent } from "./lifecycle";
+import { callHook, mountComponent } from "./lifecycle";
 import { initState } from "./state";
+import { mergeOptions } from "./utils";
 
 /**
  * 在Vue的基础上做混合操作
@@ -9,9 +10,13 @@ import { initState } from "./state";
 export function initMixin(Vue) {
   Vue.prototype._init = function (options) {
     const vm = this;
-    vm.$options = options;
+    // 组件初始化时进行合并选项操作
+    vm.$options = mergeOptions(vm.constructor.options, options);
+    // 组件初始化时调用钩子
+    callHook(vm, 'beforeCreate');
     // 对数据进行初始化 watch computed props data ...
     initState(vm);
+    callHook(vm, 'created')
     if(vm.$options.el) {
       // 挂载数据
       vm.$mount(vm.$options.el)

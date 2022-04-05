@@ -7,15 +7,42 @@ export function isObject(val) {
 export function noop() {
   return () => {}
 }
+
+// mergeOptions start---------------------------------------------------
+const lifeCycleHooks = [
+  'beforeCreate',
+  'created',
+  'beforeMount',
+  'mounted',
+  'beforeUpdate',
+  'updated',
+  'beforeDestroy',
+  'destroyed'
+]
+let strats = {}; // 存放策略
+lifeCycleHooks.forEach(hook => {
+  strats[hook] = mergeHook;
+})
 // {} {beforeCreate:Fn} => {beforeCreate::[fn]}
 // {beforeCreate::[fn]} {beforeCreate:Fn} => {beforeCreate::[fn, fn]}
+function mergeHook(parentVal, childVal) {
+  if (childVal) {
+    if (parentVal) {
+      return parentVal.concat(childVal); // 后续
+    } else {
+      return [childVal] // 第一次
+    }
+  } else {
+    return parentVal;
+  }
+}
 export function mergeOptions(parent, child) {
   const options = {};
   for (let key in parent) {
     mergeField(key)
   }
   for (let key in child) {
-    if (parent.hasOwnproperty(key)) {
+    if (parent.hasOwnProperty(key)) {
       continue;
     }
     mergeField(key);
@@ -23,19 +50,27 @@ export function mergeOptions(parent, child) {
 
   function mergeField(key) {
     const parentVal = parent[key];
-    const childVal = child[val];
-    if (isObject(parentVal) && isObject(childVal)) {
-      options[key] = {
-        ...parentVal,
-        ...childVal
-      };
+    const childVal = child[key];
+    // 策略模式
+    if (strats[key]) {
+      options[key] = strats[key](parentVal, childVal);
     } else {
-      options[key] = child[key];
+      if (isObject(parentVal) && isObject(childVal)) {
+        options[key] = {
+          ...parentVal,
+          ...childVal
+        };
+      } else {
+        options[key] = child[key];
+      }
     }
   }
   return options;
 }
 
+// mergeOptions end--------------------------------------------------------
+
+// 异步更新 nextTick start ----------------------------------------------------
 const calllbacks = [];
 
 function flushCallbacks() {
@@ -77,3 +112,4 @@ export function nextTick(cb) {
     timer(flushCallbacks);
   }
 }
+// 异步更新 nextTick end ----------------------------------------------------

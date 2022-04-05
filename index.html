@@ -8,11 +8,16 @@
 </head>
 <body>
   <div id="app" a="1" style="color: red; background-color: aqua;">
-    <span class="emo">{{fullName}}</span>
+    <span class="emo">{{name}}</span>
   </div>
   <script src="dist/vue.js"></script>
   <script>
-    let vm = new Vue({
+    Vue.mixin({
+      beforeCreate() {
+        console.log('beforeCreate1')
+      }
+    })
+    const vm = new Vue({
       el: '#app',
       data() {
         return {
@@ -22,33 +27,28 @@
           arr: [[1,2,3]]
         }
       },
-      watch: {
-        // name(newval, oldVal) {
-        //   console.log(newval, oldVal)
-        // }
-      },
-      computed: {
-        fullName: {
-          get() {
-            return this.firstName + this.lastName;
-          },
-          set(newVal) {
-            console.log(newVal)
-          }
-        }
+      beforeCreate() {
+        console.log('beforeCreate2')
       }
+      // watch: {
+      //   name(newval, oldVal) {
+      //     console.log(newval, oldVal)
+      //   }
+      // },
+      // computed: {
+      //   fullName: {
+      //     get() {
+      //       return this.firstName + this.lastName;
+      //     },
+      //     set(newVal) {
+      //       console.log(newVal)
+      //     }
+      //   }
+      // }
       // render(){
       //   return h('div', {class:'xxx'}, 'hello')
       // }
     })
-    console.log(vm.fullName)
-    // setTimeout(() => {
-    //   vm.name = 'hxy'
-    //   vm.name = 'yy'
-    //   vm.$nextTick(() => {
-    //     console.log(vm.$el)
-    //   })
-    // }, 100)
   </script>
 </body>
 </html>
