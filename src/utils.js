@@ -7,6 +7,11 @@ export function isObject(val) {
 export function noop() {
   return () => {}
 }
+export function isReservedTag(str) {
+  const reserveTag = 'a,div,span,p,img,button,ul,li,input,textarea';
+  // 源码根据“，”生成映射表{a: true, span: true}
+  return reserveTag.includes(str)
+}
 
 // mergeOptions start---------------------------------------------------
 const lifeCycleHooks = [
@@ -71,7 +76,7 @@ export function mergeOptions(parent, child) {
           ...childVal
         };
       } else {
-        options[key] = child[key];
+        options[key] = child[key] || parent[key];
       }
     }
   }

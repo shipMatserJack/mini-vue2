@@ -8,15 +8,18 @@
 </head>
 <body>
   <div id="app" a="1" style="color: red; background-color: aqua;">
-    <span class="emo">{{name}}</span>
+    <my-button></my-button>
   </div>
   <script src="dist/vue.js"></script>
   <script>
-    Vue.mixin({
-      beforeCreate() {
-        console.log('beforeCreate1')
-      }
-    })
+    // Vue.mixin({
+    //   beforeCreate() {
+    //     console.log('beforeCreate1')
+    //   }
+    // })
+    // Vue.component("my-button", {
+    //   template: '<button>hello</button>'
+    // })
     const vm = new Vue({
       el: '#app',
       data() {
@@ -27,8 +30,22 @@
           arr: [[1,2,3]]
         }
       },
+      components: {
+        "my-button": {
+          template: '<button>world</button>',
+          beforeCreate() {
+            console.log('beforeCreate儿子')
+          },
+          mounted() {
+            console.log('mounted儿子')
+          }
+        }
+      },
       beforeCreate() {
-        console.log('beforeCreate2')
+        console.log('beforeCreate父亲')
+      },
+      mounted() {
+        console.log('mounted父亲')
       }
       // watch: {
       //   name(newval, oldVal) {
@@ -52,3 +69,12 @@
   </script>
 </body>
 </html>
+
+<!-- 
+  组件渲染流程：
+  1.组件创建一个构造函数，基于Vue
+  2.开始生成虚拟节点，对组件进行特殊处理 data.hook = { init(){} }
+  3.生成dom元素，如果当前虚拟节点有hook.init属性，说明是组件
+  4.对组件进行new 组件().$mount() => vm.$el
+  5.将组件的$el 插入到父容器中
+ -->

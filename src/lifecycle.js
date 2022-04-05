@@ -17,6 +17,7 @@ export function mountComponent(vm, el) {
   new Watcher(vm, updateComponent, () => {
     console.log('视图更新了')
   }, true);
+  callHook(vm, 'mounted');
 }
 
 export function lifecycleMixin(Vue) {

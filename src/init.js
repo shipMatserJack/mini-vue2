@@ -12,6 +12,7 @@ export function initMixin(Vue) {
     const vm = this;
     // 组件初始化时进行合并选项操作
     vm.$options = mergeOptions(vm.constructor.options, options);
+    console.log(vm.$options)
     // 组件初始化时调用钩子
     callHook(vm, 'beforeCreate');
     // 对数据进行初始化 watch computed props data ...
@@ -32,10 +33,10 @@ export function initMixin(Vue) {
       let template = options.template;
       if(!template && el) {
         template = el.outerHTML;
-        // render函数
-        const render = compileToFunction(template)
-        options.render = render;
       }
+      // render函数
+      const render = compileToFunction(template)
+      options.render = render;
     }
     // 组件挂载
     mountComponent(vm, el);

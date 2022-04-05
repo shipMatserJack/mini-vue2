@@ -6,8 +6,6 @@ const attribute = /^\s*([^\s"'<>\/=]+)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s
 const startTagClose = /^\s*(\/?)>/ // 匹配标签关闭
 const defaultTagRE = /\{\{((?:.|\r?\n)+?)\}\}/g // 匹配模板字符 {{}}
 
-let root = null; // 根节点
-let stack = [];
 /**
  * @desc 构建AST语法树，数据格式算法（栈）
  * 1、循环解析字符串，解析<开头
@@ -18,48 +16,52 @@ let stack = [];
  * 4、最后解析结尾标签（同时）
  *    4.1、将元素弹出出栈
  */
-function createAstElement (tagName, attrs) {
-  return {
-    tag: tagName,
-    type: 1,
-    children: [],
-    parent: null,
-    attrs
-  }
-}
-function start(tagName, attrs) {
-  let parent = stack[stack.length - 1]
-  let element = createAstElement(tagName, attrs);
-  if (!root) {
-    root = element;
-  }
-  //  标记元素父亲
-  if(parent) {
-    element.parent = parent;
-    parent.children.push(element);
-  }
-  stack.push(element);
-}
-
-function end(tagName) {
-  let lastEle = stack.pop();
-  if (lastEle.tag !== tagName) {
-    throw new Error('标签有误')
-  }
-}
-
-function chars(text) {
-  text = text.replace(/\s/g, '');
-  let parent = stack[stack.length - 1];
-  if (text) {
-    parent.children.push({
-      type: 3,
-      text
-    })
-  }
-}
 
 export function parserHTML(html) { // <div id="app">123</app>
+  let root = null; // 根节点
+  let stack = [];
+
+  function createAstElement (tagName, attrs) {
+    return {
+      tag: tagName,
+      type: 1,
+      children: [],
+      parent: null,
+      attrs
+    }
+  }
+  function start(tagName, attrs) {
+    let parent = stack[stack.length - 1]
+    let element = createAstElement(tagName, attrs);
+    if (!root) {
+      root = element;
+    }
+    //  标记元素父亲
+    if(parent) {
+      element.parent = parent;
+      parent.children.push(element);
+    }
+    stack.push(element);
+  }
+  
+  function end(tagName) {
+    let lastEle = stack.pop();
+    if (lastEle.tag !== tagName) {
+      throw new Error('标签有误')
+    }
+  }
+  
+  function chars(text) {
+    text = text.replace(/\s/g, '');
+    let parent = stack[stack.length - 1];
+    if (text) {
+      parent.children.push({
+        type: 3,
+        text
+      })
+    }
+  }
+
   // 删除标签
   function advance(len) {
     html = html.substring(len);
