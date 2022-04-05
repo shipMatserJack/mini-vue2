@@ -1,3 +1,4 @@
+import { initGlobalApi } from "./global-api/index";
 import { initMixin } from "./init";
 import { lifecycleMixin } from "./lifecycle";
 import { renderMixin } from "./render";
@@ -16,5 +17,8 @@ initMixin(Vue);
 renderMixin(Vue);
 lifecycleMixin(Vue);
 stateMixin(Vue);
+
+// 在类上扩展 Vue.mixin
+initGlobalApi(Vue);
 
 export default Vue

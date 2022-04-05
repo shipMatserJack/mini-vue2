@@ -7,6 +7,34 @@ export function isObject(val) {
 export function noop() {
   return () => {}
 }
+// {} {beforeCreate:Fn} => {beforeCreate::[fn]}
+// {beforeCreate::[fn]} {beforeCreate:Fn} => {beforeCreate::[fn, fn]}
+export function mergeOptions(parent, child) {
+  const options = {};
+  for (let key in parent) {
+    mergeField(key)
+  }
+  for (let key in child) {
+    if (parent.hasOwnproperty(key)) {
+      continue;
+    }
+    mergeField(key);
+  }
+
+  function mergeField(key) {
+    const parentVal = parent[key];
+    const childVal = child[val];
+    if (isObject(parentVal) && isObject(childVal)) {
+      options[key] = {
+        ...parentVal,
+        ...childVal
+      };
+    } else {
+      options[key] = child[key];
+    }
+  }
+  return options;
+}
 
 const calllbacks = [];
 
