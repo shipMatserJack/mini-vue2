@@ -23,6 +23,16 @@ let strats = {}; // 存放策略
 lifeCycleHooks.forEach(hook => {
   strats[hook] = mergeHook;
 })
+strats.components = function(parentVal, childVal) {
+  // Vue.options.components
+  let options = Object.create(parentVal); // 根据父类构造新对象 options.__proto__
+  if(childVal) {
+    for(let key in childVal) {
+      options[key] = childVal[key]
+    }
+  }
+  return options;
+}
 // {} {beforeCreate:Fn} => {beforeCreate::[fn]}
 // {beforeCreate::[fn]} {beforeCreate:Fn} => {beforeCreate::[fn, fn]}
 function mergeHook(parentVal, childVal) {
