@@ -13,6 +13,7 @@ export function isReservedTag(str) {
   return reserveTag.includes(str)
 }
 
+
 // mergeOptions start---------------------------------------------------
 const lifeCycleHooks = [
   'beforeCreate',
@@ -84,6 +85,8 @@ export function mergeOptions(parent, child) {
 }
 
 // mergeOptions end--------------------------------------------------------
+
+
 
 // 异步更新 nextTick start ----------------------------------------------------
 const calllbacks = [];

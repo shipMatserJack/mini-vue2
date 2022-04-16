@@ -4,6 +4,7 @@ import {
 
 export function initGlobalApi(Vue) {
   Vue.options = {}; // 存放全局配置，每个组件初始化时都会和options选项进行合并
+
   Vue.mixin = function (options) {
     this.options = mergeOptions(this.options, options);
     console.log(this.options);
@@ -17,7 +18,6 @@ export function initGlobalApi(Vue) {
     definition = this.options._base.extend(definition);
     this.options.components[id] = definition;
   }
-
 
   Vue.extend = function (opts) {
     const Super = this; // this指向Vue

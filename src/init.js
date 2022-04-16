@@ -12,7 +12,7 @@ export function initMixin(Vue) {
     const vm = this;
     // 组件初始化时进行合并选项操作
     vm.$options = mergeOptions(vm.constructor.options, options);
-    console.log(vm.$options)
+    // console.log(vm.$options)
     // 组件初始化时调用钩子
     callHook(vm, 'beforeCreate');
     // 对数据进行初始化 watch computed props data ...

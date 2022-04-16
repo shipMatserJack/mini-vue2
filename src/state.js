@@ -30,10 +30,14 @@ function proxy(vm, source, key) {
   })
 }
 
+// 初始化状态
 export function initState(vm) {
   const opts = vm.$options;
   // if(opts.props) {
-  //   initProps();
+  //   initProps(vm, opt.props);
+  // }
+  // if(opts.methods) {
+  //   initMethods(vm, opt.methods);
   // }
   if (opts.data) {
     initData(vm);
@@ -46,6 +50,7 @@ export function initState(vm) {
   }
 }
 
+// 初始化data
 function initData(vm) {
   let data = vm.$options.data;
   // 这时候vm和data没任何关系，通过_data进行关联
@@ -57,6 +62,7 @@ function initData(vm) {
   observe(data);
 }
 
+// 初始化watch
 function initWatch(vm, watch) {
   for (let key in watch) {
     const handler = watch[key];
@@ -70,6 +76,7 @@ function initWatch(vm, watch) {
   }
 }
 
+// 初始化computed
 // 1. 创建计算属性watcher（表达式内响应式变量，firstName, lastName）
 // 2. 分别找到dep, dep收集渲染watcher
 // 3. 进行模版渲染
@@ -92,7 +99,7 @@ function initComputed(vm, computed) {
 
 
 
-// ----------------------------------------------------------------------------------------
+// ----------------------------------------分割线------------------------------------------------
 
 function createWatcher(vm, key, handler) {
   // 核心是原型的$watch方法
