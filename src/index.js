@@ -24,23 +24,33 @@ initGlobalApi(Vue);
 export default Vue
 
 
-import { compileToFunction } from "./compiler/index";
-import { createEle, patch } from "./vdom/patch";
-// diff算法
-const oldTemplate = '<div a="1" style="color: red;background:blue">{{message}}</div>'
-const vm1 = new Vue({data: {message: 'hello world'}})
-const render1 = compileToFunction(oldTemplate)
-const oldVnode = render1.call(vm1);
-document.body.appendChild(createEle(oldVnode))
+// import { compileToFunction } from "./compiler/index";
+// import { createEle, patch } from "./vdom/patch";
+// // diff算法
+// const oldTemplate =  `<div a="1">
+//   <li key="C">C</li>
+//   <li key="A">A</li>
+//   <li key="B">B</li>
+//   <li key="D">D</li>
+// </div>`
+// const vm1 = new Vue({data: {message: 'hello world'}})
+// const render1 = compileToFunction(oldTemplate)
+// const oldVnode = render1.call(vm1);
+// document.body.appendChild(createEle(oldVnode))
 
-const newTemplate = '<div b="2">{{message}}</div>'
-const vm2 = new Vue({data: {message: 'hj'}})
-const render2 = compileToFunction(newTemplate)
-const newVnode = render2.call(vm2);
+// const newTemplate = `<div b="2">
+// <li key="B">B</li>
+// <li key="C">C</li>
+// <li key="D">D</li>
+// <li key="A">A</li>
+// </div>`
+// const vm2 = new Vue({data: {message: 'hj'}})
+// const render2 = compileToFunction(newTemplate)
+// const newVnode = render2.call(vm2);
 
-setTimeout(()=>{
-  patch(oldVnode, newVnode)
-}, 1000)
+// setTimeout(()=>{
+//   patch(oldVnode, newVnode)
+// }, 1000)
 
 
 

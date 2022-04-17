@@ -6,6 +6,20 @@ import {
   patch
 } from "./vdom/patch";
 
+export function lifecycleMixin(Vue) {
+  Vue.prototype._update = function (vnode) {
+    const vm = this;
+    const prevVnode = vm._vnode; // 保存当前虚拟节点
+    if (!prevVnode) { // 初次渲染
+      vm.$el = patch(vm.$el, vnode);
+    } else {
+      vm.$el = patch(prevVnode, vnode);
+    }
+    vm._vnode = vnode
+  }
+  Vue.prototype.$nextTick = nextTick;
+}
+
 export function mountComponent(vm, el) {
   // 更新函数 数据变化后 会再次调用此函数
   const updateComponent = () => {
@@ -18,14 +32,6 @@ export function mountComponent(vm, el) {
     console.log('视图更新了')
   }, true);
   callHook(vm, 'mounted');
-}
-
-export function lifecycleMixin(Vue) {
-  Vue.prototype._update = function (vnode) {
-    const vm = this;
-    vm.$el = patch(vm.$el, vnode);
-  }
-  Vue.prototype.$nextTick = nextTick;
 }
 
 export function callHook(vm, hook) {
